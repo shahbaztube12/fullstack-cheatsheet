@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Full Stack Cheat Sheet — by Shahbaz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #161b27;
+    --surface2: #1e2535;
+    --border: rgba(255,255,255,0.08);
+    --border2: rgba(255,255,255,0.14);
+    --text: #e8eaf0;
+    --muted: #7a8299;
+    --accent: #6366f1;
+    --accent-dim: rgba(99,102,241,0.15);
+    --accent-border: rgba(99,102,241,0.35);
+    --green: #22c55e;
+    --green-dim: rgba(34,197,94,0.12);
+    --green-border: rgba(34,197,94,0.3);
+    --amber: #f59e0b;
+    --amber-dim: rgba(245,158,11,0.12);
+    --amber-border: rgba(245,158,11,0.3);
+    --blue: #38bdf8;
+    --blue-dim: rgba(56,189,248,0.12);
+    --blue-border: rgba(56,189,248,0.3);
+    --pink: #f472b6;
+    --pink-dim: rgba(244,114,182,0.12);
+    --pink-border: rgba(244,114,182,0.3);
+    --radius: 10px;
+    --radius-sm: 6px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 0 24px;
+    position: sticky;
+    top: 0;
+    background: rgba(15,17,23,0.92);
+    backdrop-filter: blur(12px);
+    z-index: 100;
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 56px;
+  }
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .logo span { color: var(--muted); }
+  .search-wrap {
+    flex: 1;
+    position: relative;
+  }
+  .search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 14px;
+    pointer-events: none;
+  }
+  #search {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    padding: 7px 12px 7px 34px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  #search::placeholder { color: var(--muted); }
+  #search:focus { border-color: var(--accent); }
+  .count-badge {
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* Main */
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 80px;
+  }
+
+  /* Hero */
+  .hero {
+    margin-bottom: 32px;
+    padding-bottom: 28px;
+    border-bottom: 1px solid var(--border);
+  }
+  .hero-tag {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: .06em;
+    margin-bottom: 10px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.25;
+    margin-bottom: 8px;
+  }
+  .hero p {
+    font-size: 14px;
+    color: var(--muted);
+    max-width: 520px;
+  }
+  .stats-row {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+  }
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .stat-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+  }
+
+  /* Filters */
+  .filters {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .filter-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border2);
+    background: transparent;
+    color: var(--muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .filter-btn:hover { border-color: var(--border2); color: var(--text); background: var(--surface); }
+  .filter-btn.active { color: var(--text); border-color: transparent; }
+  .filter-btn .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .filter-btn.active.all { background: var(--surface2); }
+  .filter-btn.active.fe { background: var(--accent-dim); border-color: var(--accent-border); color: var(--accent); }
+  .filter-btn.active.be { background: var(--green-dim); border-color: var(--green-border); color: var(--green); }
+  .filter-btn.active.db { background: var(--amber-dim); border-color: var(--amber-border); color: var(--amber); }
+  .filter-btn.active.tools { background: var(--blue-dim); border-color: var(--blue-border); color: var(--blue); }
+  .filter-btn.active.cert { background: var(--pink-dim); border-color: var(--pink-border); color: var(--pink); }
+
+  /* Cards */
+  .cards-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--border2); }
+  .card.open { border-color: var(--border2); }
+
+  .card-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    cursor: pointer;
+    user-select: none;
+  }
+  .cat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .cat-dot.fe { background: var(--accent); }
+  .cat-dot.be { background: var(--green); }
+  .cat-dot.db { background: var(--amber); }
+  .cat-dot.tools { background: var(--blue); }
+  .cat-dot.cert { background: var(--pink); }
+
+  .term-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+    flex: 1;
+  }
+  .cat-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    padding: 2px 8px;
+    border-radius: 4px;
+    letter-spacing: .03em;
+  }
+  .cat-label.fe { background: var(--accent-dim); color: var(--accent); }
+  .cat-label.be { background: var(--green-dim); color: var(--green); }
+  .cat-label.db { background: var(--amber-dim); color: var(--amber); }
+  .cat-label.tools { background: var(--blue-dim); color: var(--blue); }
+  .cat-label.cert { background: var(--pink-dim); color: var(--pink); }
+
+  .chevron {
+    color: var(--muted);
+    font-size: 11px;
+    transition: transform .18s;
+    flex-shrink: 0;
+  }
+  .card.open .chevron { transform: rotate(180deg); }
+
+  .card-body {
+    display: none;
+    border-top: 1px solid var(--border);
+    padding: 16px;
+  }
+  .card.open .card-body { display: block; }
+
+  .oneliner {
+    font-size: 13.5px;
+    color: var(--text);
+    line-height: 1.65;
+    margin-bottom: 14px;
+  }
+
+  .followup-box {
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    margin-bottom: 14px;
+  }
+  .followup-label {
+    font-size: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--muted);
+    letter-spacing: .05em;
+    margin-bottom: 6px;
+  }
+  .followup-text {
+    font-size: 12.5px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .code-block {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11.5px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    color: var(--accent);
+    margin-bottom: 14px;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  .copy-btn {
+    font-size: 11px;
+    font-family: 'Inter', sans-serif;
+    color: var(--muted);
+    background: transparent;
+    border: 1px solid var(--border2);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    cursor: pointer;
+    transition: all .15s;
+  }
+  .copy-btn:hover { color: var(--text); border-color: var(--border2); background: var(--surface2); }
+  .copy-btn.copied { color: var(--green); border-color: var(--green-border); }
+
+  /* Empty state */
+  .empty {
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Footer */
+  footer {
+    border-top: 1px solid var(--border);
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  @media (max-width: 600px) {
+    header { padding: 0 16px; }
+    main { padding: 20px 16px 60px; }
+    .hero h1 { font-size: 22px; }
+    .header-inner { gap: 10px; }
+    .logo { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">shahbaz<span>/</span>cheatsheet</div>
+    <div class="search-wrap">
+      <span class="search-icon">⌕</span>
+      <input id="search" type="text" placeholder="Search any term — Axios, JWT, Redux..." autocomplete="off" oninput="render()">
+    </div>
+    <div class="count-badge" id="count">30 terms</div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="hero-tag">// full-stack reference</div>
+    <h1>Frontend Engineer Cheat Sheet</h1>
+    <p>Every term in my resume — explained clearly. One-liner + follow-up answer for every concept.</p>
+    <div class="stats-row">
+      <div class="stat"><span class="stat-dot" style="background:var(--accent)"></span>Frontend (14)</div>
+      <div class="stat"><span class="stat-dot" style="background:var(--green)"></span>Backend (5)</div>
+      <div class="stat"><span class="stat-dot" style="background:var(--amber)"></span>Database (3)</div>
+      <div class="stat"><span class="stat-dot" style="background:var(--blue)"></span>Tooling (7)</div>
+      <div class="stat"><span class="stat-dot" style="background:var(--pink)"></span>Certifications (1)</div>
+    </div>
+  </div>
+
+  <div class="filters">
+    <button class="filter-btn active all" data-cat="All" onclick="setFilter(this,'All')"><span class="dot" style="background:var(--muted)"></span> All</button>
+    <button class="filter-btn fe" data-cat="fe" onclick="setFilter(this,'fe')"><span class="dot" style="background:var(--accent)"></span> Frontend</button>
+    <button class="filter-btn be" data-cat="be" onclick="setFilter(this,'be')"><span class="dot" style="background:var(--green)"></span> Backend</button>
+    <button class="filter-btn db" data-cat="db" onclick="setFilter(this,'db')"><span class="dot" style="background:var(--amber)"></span> Database</button>
+    <button class="filter-btn tools" data-cat="tools" onclick="setFilter(this,'tools')"><span class="dot" style="background:var(--blue)"></span> Tooling</button>
+    <button class="filter-btn cert" data-cat="cert" onclick="setFilter(this,'cert')"><span class="dot" style="background:var(--pink)"></span> Certifications</button>
+  </div>
+
+  <div class="cards-grid" id="cards"></div>
+  <div class="empty" id="empty" style="display:none">No results found — try a different keyword.</div>
+</main>
+
+<footer>
+  built by <a href="https://github.com/shahbaztube12" target="_blank">@shahbaztube12</a> · React · Next.js · Node.js
+</footer>
+
+<script>
+const DATA = [
+  {term:"Axios",cat:"fe",one:"HTTP client library for making API calls in JavaScript — simpler syntax than fetch, with built-in JSON parsing and error handling.",followup:"Interceptors kya hote hain?\nAxios interceptors ek middleware ki tarah kaam karte hain — har request ya response ke beech mein code run karte hain. Jaise: har request mein Authorization header auto-add karo, ya 401 error pe auto logout karo.",code:"axios.interceptors.request.use(config => {\n  config.headers.Authorization = `Bearer ${token}`;\n  return config;\n});"},
+  {term:"React Hooks",cat:"fe",one:"Functions jo functional components mein state aur lifecycle features use karne dete hain — useState, useEffect, useMemo, useCallback, useRef.",followup:"useState → state manage karna\nuseEffect → API calls, subscriptions (side effects)\nuseMemo → expensive computation memoize karna\nuseCallback → function reference stable rakhna\nuseRef → DOM element access ya mutable value"},
+  {term:"useMemo vs useCallback",cat:"fe",one:"useMemo ek computed value memoize karta hai. useCallback ek function ka reference memoize karta hai taaki unnecessary re-renders na hon.",followup:"useMemo: `const result = useMemo(() => heavyCompute(data), [data]);`\nuseCallback: `const handleClick = useCallback(() => doSomething(id), [id]);`\nDono dependency array change hone pe hi recalculate karte hain.",code:"const filtered = useMemo(() => items.filter(i => i.active), [items]);\nconst handleDelete = useCallback((id) => remove(id), [remove]);"},
+  {term:"Virtual DOM & Reconciliation",cat:"fe",one:"React pehle ek virtual (in-memory) copy of DOM banata hai, changes compare karta hai real DOM se, aur sirf jo parts change hue unhe update karta hai — ye reconciliation hai.",followup:"Kyun fast hai: Full page refresh nahi hoti. React sirf diff (difference) calculate karta hai aur minimum DOM operations run karta hai. Ye algorithm 'diffing' kehlaata hai."},
+  {term:"SSR — Server Side Rendering",cat:"fe",one:"Page ka HTML server pe render hota hai aur complete page browser ko milta hai — SEO aur first load ke liye fast, especially marketing pages ke liye.",followup:"Next.js mein: App Router mein by default Server Components SSR karte hain.\nUse karo jab: data har request pe fresh chahiye ho.\nAvoid karo jab: static content hai jo baar baar nahi badalta.",code:"// Next.js App Router — server component by default\nasync function Page() {\n  const data = await fetch('/api/data'); // server pe run hoga\n  return <div>{data}</div>;\n}"},
+  {term:"SSG — Static Site Generation",cat:"fe",one:"Build time pe HTML generate hota hai — har request pe server nahi lagta, CDN se serve hota hai — blog, landing pages ke liye best.",followup:"Next.js mein: `generateStaticParams` ya static export.\nFast, cheap, SEO-friendly.\nSirf jab content frequently change nahi karta tab use karo.",code:"// Next.js — static page\nexport const dynamic = 'force-static';\nasync function Page() {\n  const data = await fetch('/api/posts'); // build time pe\n  return <PostList posts={data} />;\n}"},
+  {term:"ISR — Incremental Static Regeneration",cat:"fe",one:"SSG + auto-update — page build time pe banta hai but background mein X seconds baad automatically regenerate hota hai.",followup:"Next.js mein: `revalidate` option set karo.\nE-commerce product pages ke liye perfect — fast like static, but stays fresh.",code:"export const revalidate = 60; // 60 seconds baad regenerate\nasync function Page() {\n  const product = await getProduct(); // fresh data milega\n  return <ProductPage product={product} />;\n}"},
+  {term:"Next.js App Router",cat:"fe",one:"Next.js 13+ ka naya routing system — file-based routing, Server Components by default, layouts, streaming sab built-in.",followup:"Pages Router se difference:\n- App Router: `app/` folder, Server Components default, `'use client'` tab hi browser pe\n- Pages Router: `pages/` folder, client-side by default\n- App Router better hai for modern Next.js projects"},
+  {term:"Tailwind CSS",cat:"fe",one:"Utility-first CSS framework — predefined classes seedha HTML mein likhte hain, custom CSS bahut kam likhna padta hai.",followup:"Kyun use karo: Faster development, consistent design, no CSS file bloat, dark mode aur responsive built-in.\nCommon classes: `flex`, `grid`, `p-4`, `text-lg`, `rounded`, `hover:bg-blue-500`",code:"<div className=\"flex items-center gap-4 p-6 rounded-xl bg-white shadow-sm\">\n  <span className=\"text-sm font-medium text-gray-900\">Card</span>\n</div>"},
+  {term:"shadcn/ui",cat:"fe",one:"Ready-made accessible React components (Radix UI pe based) — copy-paste karo apne project mein, customize karo — npm install nahi hota.",followup:"Radix UI se difference: Radix headless (unstyled) components deta hai, shadcn unke upar Tailwind styling add karta hai. Both accessible by default. shadcn mein full ownership hota hai code ka.",code:"// shadcn install command\nnpx shadcn-ui@latest add button dialog\n// phir directly import karo\nimport { Button } from '@/components/ui/button'"},
+  {term:"Radix UI",cat:"fe",one:"Headless (unstyled) accessible React component primitives — Dialog, Dropdown, Tooltip etc. — accessibility built-in, styling khud karo.",followup:"Kyun use karte hain: WCAG accessibility standards automatically follow hoti hain, keyboard navigation aur screen reader support free mein milti hai. shadcn/ui Radix ke upar hi bana hai."},
+  {term:"Redux",cat:"fe",one:"Global state management library — jab multiple components ko ek hi data share karna ho aur prop-drilling se bachna ho tab use karta hai.",followup:"Redux flow:\nAction dispatch → Reducer state update karta hai → Store mein save → Component re-render\n\nContext API chhote apps ke liye theek hai. Redux bade complex apps ke liye better hai.",code:"// slice\nconst counterSlice = createSlice({\n  name: 'counter',\n  initialState: { value: 0 },\n  reducers: { increment: state => { state.value++ } }\n});\n// dispatch\ndispatch(increment());"},
+  {term:"Context API",cat:"fe",one:"React ka built-in state sharing mechanism — chhote/mid-size apps mein Redux ki jagah use karte hain, without extra library.",followup:"Kab use karo: Theme, language, logged-in user jaise global data ke liye.\nKab nahi: Bahut zyada frequent state changes ke liye (Redux better hai).",code:"const ThemeContext = createContext('light');\nfunction App() {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      <Child />\n    </ThemeContext.Provider>\n  );\n}"},
+  {term:"TypeScript",cat:"fe",one:"JavaScript ka superset — types add karne se bugs compile time pe pakad aate hain, code zyada readable aur maintainable hota hai.",followup:"Basic types: `string`, `number`, `boolean`, `interface`, `type`, `Array<T>`\nInterfaces: component props define karne ke liye\nGenerics: reusable typed functions ke liye",code:"interface User {\n  id: number;\n  name: string;\n  email?: string; // optional\n}\nfunction greet(user: User): string {\n  return `Hello ${user.name}`;\n}"},
+  {term:"Micro-frontend",cat:"fe",one:"Bade frontend application ko chhote independent modules mein todna — alag teams alag parts independently develop aur deploy kar sakti hain.",followup:"Benefit: Team A aur Team B same project pe kaam kar sakti hain bina ek doosre ke code se conflict ke. Deployment independent rehta hai. Alpha Media mein maine ye architecture implement kiya tha."},
+  {term:"Code Splitting & Lazy Loading",cat:"fe",one:"Code splitting: JavaScript bundle ko chhote pieces mein todna. Lazy loading: components/images tab load karo jab user unhe actually dekhe.",followup:"Next.js mein automatically hota hai. React mein:\n`React.lazy()` + `Suspense` se components lazy load karo.\n`import()` se dynamic imports.\nResult: Initial page load fast hota hai.",code:"// Lazy component\nconst HeavyChart = React.lazy(() => import('./HeavyChart'));\n// Use with Suspense\n<Suspense fallback={<Spinner />}>\n  <HeavyChart />\n</Suspense>"},
+  {term:"Monaco Editor",cat:"fe",one:"VS Code ke andar ka wahi editor engine — browser mein embed karo toh users ko VS Code jaisa experience milta hai — syntax highlight, autocomplete sab.",followup:"Online Compiler project mein yahi use kiya hai. Interview mein bolo: 'Maine Monaco Editor integrate kiya taaki browser mein VS Code jaisi coding experience mile, with syntax highlighting aur language support.'"},
+  {term:"Node.js",cat:"be",one:"JavaScript ko server pe chalane ki runtime — non-blocking, event-driven architecture — APIs, file operations, real-time apps ke liye.",followup:"Kyun Node: Same language frontend aur backend mein, npm ka huge ecosystem, async operations fast hote hain.\nEvent loop: Single thread pe multiple requests handle karta hai non-blocking I/O se.",code:"const http = require('http');\nconst server = http.createServer((req, res) => {\n  res.end('Hello from Node!');\n});\nserver.listen(3000);"},
+  {term:"Express.js",cat:"be",one:"Node.js ke liye minimal web framework — routes banao, middleware use karo, APIs quickly build karo.",followup:"MVC mein:\nRoutes (express router) → Controller (logic) → Model (database)\nChaibackend project exactly isi architecture pe hai.",code:"const express = require('express');\nconst app = express();\n\napp.get('/users', async (req, res) => {\n  const users = await User.find();\n  res.json(users);\n});\n\napp.listen(8000);"},
+  {term:"JWT Authentication",cat:"be",one:"JSON Web Token — login ke baad server ek encoded token deta hai jo user ki identity prove karta hai. Ye token har API request mein send hota hai.",followup:"Flow:\n1. User login → server JWT banata hai\n2. Client localStorage/cookie mein store karta hai\n3. Har API call mein `Authorization: Bearer <token>` header\n4. Server verify karta hai → access milta hai",code:"// Token banana\nconst token = jwt.sign({ userId: user._id }, process.env.SECRET, { expiresIn: '7d' });\n// Verify middleware\nconst decoded = jwt.verify(req.headers.authorization.split(' ')[1], SECRET);"},
+  {term:"REST API",cat:"be",one:"Standard tarika client-server communication ka — GET (padhna), POST (banana), PUT (update), DELETE (mitana) — endpoints ke through data exchange.",followup:"HTTP Methods:\nGET /users → sab users lao\nPOST /users → naya user banao\nPUT /users/:id → user update karo\nDELETE /users/:id → user delete karo",code:"// Express REST endpoints\nrouter.get('/posts', getPosts);    // READ\nrouter.post('/posts', createPost); // CREATE\nrouter.put('/posts/:id', updatePost); // UPDATE\nrouter.delete('/posts/:id', deletePost); // DELETE"},
+  {term:"Socket.io",cat:"be",one:"Real-time two-way communication library — WebSocket pe based — chat apps, live notifications, collaborative tools ke liye use hota hai.",followup:"How it works: Client aur server dono ek persistent connection banate hain — server kabhi bhi client ko data push kar sakta hai bina client ke maange. HTTP mein sirf client maangta hai, Socket.io mein dono communicate karte hain.",code:"// Server\nio.on('connection', socket => {\n  socket.on('message', data => {\n    io.emit('message', data); // sab ko bhejo\n  });\n});\n// Client\nsocket.emit('message', { text: 'Hello!' });"},
+  {term:"MVC Architecture",cat:"be",one:"Model (database logic) + View (UI/response) + Controller (business logic) — code ko organized layers mein todne ka standard pattern.",followup:"Tera chaibackend:\n/models → MongoDB schema (User, Post)\n/controllers → business logic functions\n/routes → Express routing\n\nIs architecture mein maintenance aur scaling dono aasan hoti hai.",code:"// Controller example\nconst getUser = async (req, res) => {\n  const user = await User.findById(req.params.id); // Model\n  res.json(user); // View (JSON response)\n};"},
+  {term:"MongoDB",cat:"db",one:"NoSQL document database — data JSON-like objects (documents) mein store hota hai, rigid schema nahi hoti — flexible aur fast for most web apps.",followup:"SQL vs MongoDB:\n- SQL: tables/rows/columns, strict schema\n- MongoDB: collections/documents, flexible schema\nJab schema flexible ho ya JSON data directly store karna ho tab MongoDB better.",code:"// Mongoose model\nconst userSchema = new mongoose.Schema({\n  name: { type: String, required: true },\n  email: { type: String, unique: true },\n  createdAt: { type: Date, default: Date.now }\n});"},
+  {term:"Supabase",cat:"db",one:"Open-source Firebase alternative — PostgreSQL database + Auth + Realtime + Storage, sab REST/SDK ke through accessible.",followup:"Use case: Real-time dashboard updates chahiye — Supabase ka realtime subscription use karo. Backend code bahut kam likhna padta hai. Online Compiler project mein potential use: user sessions store karna.",code:"// Supabase realtime subscription\nsupabase\n  .channel('orders')\n  .on('postgres_changes', { event: '*', schema: 'public' }, payload => {\n    setData(payload.new);\n  }).subscribe();"},
+  {term:"Postman",cat:"db",one:"API testing tool — backend endpoints ko manually test karo, request bhejo, response dekho — bina frontend banaye API debug karo.",followup:"Workflow: Backend banate waqt pehle Postman se test karo — methods, headers, body sab verify karo before frontend integration. Collections mein save karo taaki team share kar sake."},
+  {term:"GitHub Actions / CI-CD",cat:"tools",one:"Har git push pe automatically test/build/deploy hota hai — manual deployment ki zaroorat nahi, consistent process ensure hota hai.",followup:"Tera workflow:\nPush to GitHub → GitHub Actions trigger → Build check → Vercel pe auto-deploy → Preview URL milti hai\nBolo: 'Maine ye pipeline configure ki taaki har push pe preview URL mile aur manual deployment na karna pade.'",code:"# .github/workflows/deploy.yml\nname: Deploy\non: [push]\njobs:\n  deploy:\n    runs-on: ubuntu-latest\n    steps:\n      - uses: actions/checkout@v3\n      - run: npm install && npm run build"},
+  {term:"Vercel",cat:"tools",one:"Next.js ke creators ki hosting platform — zero config deployment, automatic preview URLs on every branch, edge functions support.",followup:"Kyun Vercel: Next.js ke saath best integration, SSR/SSG automatically handle karta hai, CDN globally distributed hai. Free tier mein bhi preview deployments milti hain."},
+  {term:"ESLint",cat:"tools",one:"Code quality tool — automatically code errors, bad patterns, aur style issues dhundta hai — save karte hi ya CI mein.",followup:"Online Code Compiler mein configure kiya hai. Bolo: 'Maine ESLint configure kiya strict rules ke saath taaki consistent code quality maintain ho across the project.'",code:"// .eslintrc.json\n{\n  \"extends\": [\"next/core-web-vitals\", \"eslint:recommended\"],\n  \"rules\": {\n    \"no-unused-vars\": \"error\",\n    \"no-console\": \"warn\"\n  }\n}"},
+  {term:"Git & GitHub",cat:"tools",one:"Git — version control system; GitHub — git repositories online host karne ki platform + collaboration, PRs, CI/CD sab ek jagah.",followup:"Daily commands:\ngit clone, git branch, git add, git commit, git push, git pull, git merge\n\nWorkflow: Feature branch banao → push karo → PR open karo → review → merge to main",code:"git checkout -b feature/new-component  # naya branch\ngit add . && git commit -m 'feat: add button'\ngit push origin feature/new-component    # PR ke liye"},
+  {term:"AWS Cloud Practitioner",cat:"cert",one:"AWS ka foundational certification — cloud concepts, basic AWS services (EC2, S3, Lambda), billing, security ke baare mein knowledge.",followup:"Agar poochha jaye: 'Mujhe AWS ka basic understanding hai — EC2 servers ke liye, S3 file storage ke liye, Lambda serverless functions ke liye, aur cloud deployment concepts. Practically main Vercel use karta hoon deployments ke liye.' Honest rahon — depth nahi hai advanced mein."},
+];
+
+let activeFilter = 'All';
+let openIndex = null;
+
+function catClass(cat) {
+  return cat;
+}
+
+function setFilter(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  activeFilter = cat;
+  openIndex = null;
+  render();
+}
+
+function copyCode(btn, code) {
+  navigator.clipboard.writeText(code).then(() => {
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1500);
+  });
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const filtered = DATA.filter((d, i) => {
+    d._origIdx = i;
+    const matchCat = activeFilter === 'All' || d.cat === activeFilter;
+    const matchSearch = !q || d.term.toLowerCase().includes(q) || d.one.toLowerCase().includes(q) || d.followup.toLowerCase().includes(q);
+    return matchCat && matchSearch;
+  });
+
+  document.getElementById('count').textContent = filtered.length + ' terms';
+  const el = document.getElementById('cards');
+  const empty = document.getElementById('empty');
+
+  if (!filtered.length) {
+    el.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  el.innerHTML = filtered.map((d, i) => {
+    const isOpen = openIndex === d.term;
+    const catLabels = { fe: 'Frontend', be: 'Backend', db: 'Database', tools: 'Tooling', cert: 'Cert' };
+    const codeBlock = d.code ? `
+      <div style="position:relative;margin-bottom:14px">
+        <div class="code-block">${d.code.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>
+        <button class="copy-btn" style="position:absolute;top:8px;right:8px" onclick="copyCode(this, \`${d.code.replace(/`/g,'\\`')}\`)">Copy</button>
+      </div>` : '';
+    return `
+    <div class="card${isOpen?' open':''}" id="card-${d.term.replace(/\s/g,'-')}">
+      <div class="card-head" onclick="toggleCard('${d.term}')">
+        <span class="cat-dot ${d.cat}"></span>
+        <span class="term-name">${d.term}</span>
+        <span class="cat-label ${d.cat}">${catLabels[d.cat]}</span>
+        <span class="chevron">▼</span>
+      </div>
+      <div class="card-body">
+        <div class="oneliner">${d.one}</div>
+        ${codeBlock}
+        <div class="followup-box">
+          <div class="followup-label">// agar follow-up question aaye</div>
+          <div class="followup-text">${d.followup.replace(/\n/g,'<br>')}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCard(term) {
+  openIndex = openIndex === term ? null : term;
+  render();
+  if (openIndex) {
+    const el = document.getElementById('card-' + term.replace(/\s/g,'-'));
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 50);
+  }
+}
+
+render();
+</script>
+</body>
+</html>
